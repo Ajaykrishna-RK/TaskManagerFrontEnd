@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const base = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const base = import.meta.env.VITE_API_URL || "http://localhost:8080/api/";
 
 const axiosInstance = axios.create({
   baseURL: base,
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
   },
 });
 
-const publicRoutes = ["/auth/login", "/auth/register"];
+const publicRoutes = ["auth/login", "auth/register"];
 
 axiosInstance.interceptors.request.use(
   (config) => {
