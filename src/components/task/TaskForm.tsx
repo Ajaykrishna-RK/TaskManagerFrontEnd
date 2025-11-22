@@ -7,6 +7,8 @@ import ErrorText from "../common/ErrorText";
 
 import type { RootState } from "../../redux/store";
 import ButtonLayout from "../common/ButtonLayout";
+import StatusStepper from "../common/StatusStepper";
+import TextComponent from "../common/TextComponent";
 
 interface Props {
   editing: Task | null;
@@ -25,21 +27,25 @@ export default function TaskForm({
 
   const [form, setForm] = useState<Partial<Task>>({
     task: "",
-
+    description: "",
+    dueDate: "",
     priority: "medium",
   });
 
-  const [errors, setErrors] = useState<{ task?: string }>({}); // task validation
+  const [errors, setErrors] = useState<{ task?: string; dueDate?: string }>({}); // task validation
 
   useEffect(() => {
     if (editing) setForm(editing);
   }, [editing]);
 
   const validate = () => {
-    const newErrors: { task?: string } = {};
+    const newErrors: { task?: string; dueDate?: string } = {};
 
     if (!form.task || form.task.trim() === "") {
       newErrors.task = "task is required";
+    }
+    if (!form.dueDate || form.dueDate.trim() === "") {
+      newErrors.dueDate = "Date is required";
     }
 
     setErrors(newErrors);
@@ -66,58 +72,53 @@ export default function TaskForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex gap-3 flex-wrap mb-6 items-start"
+      className="flex gap-3 flex-col  w-full mb-6 items-start"
     >
       {/* task */}
-      <div className="flex flex-col flex-1 min-w-[180px]">
+      <div className="flex flex-col flex-1 w-full">
         <InputField
           placeholder="task"
           value={form.task || ""}
           onChange={(e) => setForm({ ...form, task: e.target.value })}
         />
         {errors.task && <ErrorText text={errors.task} />}
-      </div>
 
-      {/* Description */}
+        <InputField
+          placeholder="Description"
+          className="mt-2"
+          value={form.description || ""}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+        />
+
+        <InputField
+          type="date"
+          value={form.dueDate || ""}
+          onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+          className="mt-2"
+        />
+
+        {errors.dueDate && <ErrorText text={errors.dueDate} />}
+      </div>
 
       {/* Priority */}
       <div className="flex flex-col cursor-pointer">
-        <InputField
-          type="select"
-          value={form.priority}
-          onChange={(e) =>
+        <TextComponent className="mb-2" text="Priority" />
+        <StatusStepper
+          steps={["low", "medium", "high"]}
+          active={form.priority!}
+          onChange={(newStatus) =>
             setForm({
               ...form,
-              priority: e.target.value as Task["priority"],
+              priority: newStatus as Task["priority"],
             })
           }
-          options={[
-            { value: "low", label: "Low" },
-            { value: "medium", label: "Medium" },
-            { value: "high", label: "High" },
-          ]}
         />
       </div>
 
       {/* Save Button */}
-      <ButtonLayout type="submit" variant="primary">
+      <ButtonLayout className="w-full " type="submit" variant="primary">
         {editing ? "Update" : "Create"}
       </ButtonLayout>
-
-      {/* Cancel Button */}
-      {editing && (
-        <ButtonLayout
-          type="button"
-          variant="secondary"
-          onClick={() => {
-            clearEditing();
-            setForm({ task: "", priority: "medium" });
-            setErrors({});
-          }}
-        >
-          Cancel
-        </ButtonLayout>
-      )}
     </form>
   );
 }

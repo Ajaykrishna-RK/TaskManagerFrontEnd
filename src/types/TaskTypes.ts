@@ -4,6 +4,7 @@ export type Status = "todo" | "in-progress" | "done";
 export interface Task {
   _id?: string;
   task: string;
+  description?: string;
   priority: Priority;
   dueDate?: string;
   status: Status;

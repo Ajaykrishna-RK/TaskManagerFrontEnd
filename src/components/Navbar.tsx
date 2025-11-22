@@ -1,15 +1,20 @@
 // import { useDispatch } from "react-redux";
 // import { logout } from "../features/authSlice";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ButtonLayout from "./common/ButtonLayout";
 import { useDispatch } from "react-redux";
 import { clearAuth } from "../redux/slice/AuthSlice";
+import { navbarLinks } from "../data/Data";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-
+  const location = useLocation();
+  const linkClass = (path: string) =>
+    location.pathname === path
+      ? "text-blue-600 font-semibold" // Active
+      : "text-gray-700 hover:text-blue-400";
   const logout = () => {
     dispatch(clearAuth());
   };
@@ -21,22 +26,19 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <Link
-            to="/dashboard"
-            className="hover:text-blue-400 transition-colors duration-200 font-medium"
-          >
-            Dashboard
-          </Link>
-
-          <Link
-            to="/tasks"
-            className="hover:text-blue-400 transition-colors duration-200 font-medium"
-          >
-            Tasks
-          </Link>
+          {navbarLinks?.map((item) => (
+            <Link
+              to={item.link}
+              className={`font-medium transition-colors duration-200 ${linkClass(
+                item.link
+              )}`}
+            >
+              {item.name}
+            </Link>
+          ))}
 
           <ButtonLayout onClick={logout} variant="danger">
-            logut
+            logout
           </ButtonLayout>
         </div>
 
@@ -71,24 +73,19 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="md:hidden mt-4 space-y-4">
-          <Link
-            to="/dashboard"
-            className="block hover:text-blue-400 font-medium"
-            onClick={() => setOpen(false)}
-          >
-            Dashboard
-          </Link>
+        <div className="md:hidden mt-4 flex flex-col space-y-4">
+          {navbarLinks?.map((item) => (
+            <Link
+              to={item.link}
+              className={`font-medium transition-colors duration-200 ${linkClass(
+                item.link
+              )}`}
+            >
+              {item.name}
+            </Link>
+          ))}
 
-          <Link
-            to="/tasks"
-            className="block hover:text-blue-400 font-medium"
-            onClick={() => setOpen(false)}
-          >
-            Tasks
-          </Link>
-
-          <ButtonLayout variant="danger">logut</ButtonLayout>
+          <ButtonLayout variant="danger">logout</ButtonLayout>
         </div>
       )}
     </nav>

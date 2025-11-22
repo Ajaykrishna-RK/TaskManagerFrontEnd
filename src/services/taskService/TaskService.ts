@@ -4,7 +4,6 @@ import axiosInstance from "../axiosInstance";
 export const taskService = {
   fetchTasks: async () => {
     const res = await axiosInstance.get("/tasks");
-
     return res.data?.data as Task[];
   },
 
@@ -15,11 +14,16 @@ export const taskService = {
 
   updateTask: async (id: string, payload: Partial<Task>) => {
     const res = await axiosInstance.put(`/tasks/${id}`, payload);
-    return res.data as Task;
+    return res.data?.data as Task;
   },
 
   deleteTask: async (id: string) => {
     const res = await axiosInstance.delete(`/tasks/${id}`);
+    return res.data;
+  },
+
+  dashboardStats: async () => {
+    const res = await axiosInstance.get("/tasks/dashboard");
     return res.data;
   },
 };

@@ -8,7 +8,9 @@ interface InputFieldProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
   options?: { value: string; label: string }[];
-  className?: string; // ⭐ NEW
+  className?: string;
+  min?: string; // ⭐ Optional for dates
+  max?: string; // ⭐ Optional for dates
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -17,12 +19,14 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   onChange,
   options = [],
-  className = "", // ⭐ NEW
+  className = "",
+  min,
+  max,
 }) => {
   const baseStyles =
     "w-full p-3 border border-gray-300 rounded-lg focus:outline-none";
 
-  // Handle Select Field
+  // SELECT FIELD
   if (type === "select") {
     return (
       <select
@@ -39,13 +43,15 @@ const InputField: React.FC<InputFieldProps> = ({
     );
   }
 
-  // Handle Normal Input Field
+  // INPUT FIELD (includes type="date")
   return (
     <input
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      min={min}
+      max={max}
       className={`${baseStyles} ${className}`}
     />
   );

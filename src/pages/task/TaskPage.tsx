@@ -15,11 +15,13 @@ import { taskService } from "../../services/taskService/TaskService";
 import TaskForm from "../../components/task/TaskForm";
 import TaskList from "../../components/task/TaskList";
 import PopUpWrapper from "../../components/common/PopUpWrapper";
+import ButtonLayout from "../../components/common/ButtonLayout";
 
 export default function TaskPage() {
   const dispatch = useDispatch();
   const { tasks, loading } = useSelector((s: RootState) => s.tasks);
-
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
 
@@ -51,32 +53,37 @@ export default function TaskPage() {
     setModalOpen(false);
   };
 
-  const handleDelete = async (id: string) => {
-    await taskService.deleteTask(id);
-    dispatch(removeTask(id));
-  };
-
   const handleStatusChange = async (id: string, status: Task["status"]) => {
     const updated = await taskService.updateTask(id, { status });
     dispatch(updateTask(updated));
   };
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+
+    await taskService.deleteTask(deleteId);
+    dispatch(removeTask(deleteId));
+
+    setDeleteId(null);
+    setDeleteModalOpen(false);
+  };
 
   return (
-    <div className="container">
-      <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
+    <div className="container mt-7 md:mt-10">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-semibold mb-4">Tasks</h1>
 
-      {/* ADD TASK BUTTON */}
-      <button
-        onClick={() => {
-          setEditing(null);
-          setModalOpen(true);
-        }}
-        className="mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        + Add Task
-      </button>
+        {/* ADD TASK BUTTON */}
+        <ButtonLayout
+          variant="primary"
+          onClick={() => {
+            setEditing(null);
+            setModalOpen(true);
+          }}
+        >
+          + Add Task
+        </ButtonLayout>
+      </div>
 
-      {/* POPUP / MODAL */}
       <PopUpWrapper
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
@@ -90,13 +97,32 @@ export default function TaskPage() {
         />
       </PopUpWrapper>
 
+      <PopUpWrapper
+        open={isDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="Confirm Delete"
+      >
+        <p className="text-gray-700 text-sm">
+          Are you sure you want to delete this task?
+        </p>
+
+        <div className="flex justify-end gap-3 mt-6">
+          <ButtonLayout variant="danger" onClick={confirmDelete}>
+            Delete
+          </ButtonLayout>
+        </div>
+      </PopUpWrapper>
+
       {/* TASK LIST */}
       {loading ? (
         <div>Loading tasks...</div>
       ) : (
         <TaskList
           tasks={tasks}
-          onDelete={handleDelete}
+          onDelete={(id) => {
+            setDeleteId(id);
+            setDeleteModalOpen(true);
+          }}
           onEdit={(task) => {
             setEditing(task);
             setModalOpen(true);
