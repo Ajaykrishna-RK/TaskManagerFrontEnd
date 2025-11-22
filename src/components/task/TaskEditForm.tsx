@@ -13,26 +13,19 @@ export default function TaskEditForm({ task, onSave, onCancel }: Props) {
   const [form, setForm] = useState<Partial<Task>>(task);
 
   const handleSave = () => {
-    if (!form.title?.trim()) return;
+    if (!form.task?.trim()) return;
     onSave({ ...task, ...form });
   };
 
   return (
     <div className="flex-1">
       <InputField
-        placeholder="Title"
-        value={form.title}
-        onChange={(e) => setForm({ ...form, title: e.target.value })}
+        placeholder="task"
+        value={form.task}
+        onChange={(e) => setForm({ ...form, task: e.target.value })}
       />
 
-      <InputField
-        placeholder="Description"
-        className="mt-2"
-        value={form.description}
-        onChange={(e) =>
-          setForm({ ...form, description: e.target.value })
-        }
-      />
+    
 
       <InputField
         type="select"

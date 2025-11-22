@@ -10,8 +10,7 @@ export const taskService = {
 
   createTask: async (payload: Partial<Task>) => {
     const res = await axiosInstance.post("/tasks", payload);
-
-    return res.data as Task;
+    return res.data?.data as Task;
   },
 
   updateTask: async (id: string, payload: Partial<Task>) => {

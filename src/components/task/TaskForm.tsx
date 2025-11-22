@@ -21,25 +21,25 @@ export default function TaskForm({
   onUpdate,
   clearEditing,
 }: Props) {
-  const userId = useSelector((state: RootState) => state.auth.user?._id); 
+  const userId = useSelector((state: RootState) => state.auth.user?._id);
 
   const [form, setForm] = useState<Partial<Task>>({
-    title: "",
-    description: "",
+    task: "",
+
     priority: "medium",
   });
 
-  const [errors, setErrors] = useState<{ title?: string }>({}); // title validation
+  const [errors, setErrors] = useState<{ task?: string }>({}); // task validation
 
   useEffect(() => {
     if (editing) setForm(editing);
   }, [editing]);
 
   const validate = () => {
-    const newErrors: { title?: string } = {};
+    const newErrors: { task?: string } = {};
 
-    if (!form.title || form.title.trim() === "") {
-      newErrors.title = "Title is required";
+    if (!form.task || form.task.trim() === "") {
+      newErrors.task = "task is required";
     }
 
     setErrors(newErrors);
@@ -49,7 +49,7 @@ export default function TaskForm({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) return; 
+    if (!validate()) return;
 
     const payload = {
       ...form,
@@ -59,7 +59,7 @@ export default function TaskForm({
     if (editing) onUpdate(payload);
     else onCreate(payload);
 
-    setForm({ title: "", description: "", priority: "medium" });
+    setForm({ task: "", priority: "medium" });
     setErrors({});
   };
 
@@ -68,24 +68,17 @@ export default function TaskForm({
       onSubmit={handleSubmit}
       className="flex gap-3 flex-wrap mb-6 items-start"
     >
-      {/* Title */}
+      {/* task */}
       <div className="flex flex-col flex-1 min-w-[180px]">
         <InputField
-          placeholder="Title"
-          value={form.title || ""}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          placeholder="task"
+          value={form.task || ""}
+          onChange={(e) => setForm({ ...form, task: e.target.value })}
         />
-        {errors.title && <ErrorText text={errors.title} />}
+        {errors.task && <ErrorText text={errors.task} />}
       </div>
 
       {/* Description */}
-      <div className="flex flex-col flex-1 min-w-[200px]">
-        <InputField
-          placeholder="Description"
-          value={form.description || ""}
-          onChange={(e) => setForm({ ...form, description: e.target.value })}
-        />
-      </div>
 
       {/* Priority */}
       <div className="flex flex-col cursor-pointer">
@@ -118,7 +111,7 @@ export default function TaskForm({
           variant="secondary"
           onClick={() => {
             clearEditing();
-            setForm({ title: "", description: "", priority: "medium" });
+            setForm({ task: "", priority: "medium" });
             setErrors({});
           }}
         >

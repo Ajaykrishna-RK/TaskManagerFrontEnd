@@ -19,6 +19,7 @@ const taskSlice = createSlice({
       state.tasks = action.payload;
     },
     addTask: (state, action: PayloadAction<Task>) => {
+      console.log(action.payload,"pu")
       state.tasks.unshift(action.payload);
     },
     updateTask: (state, action: PayloadAction<Task>) => {
