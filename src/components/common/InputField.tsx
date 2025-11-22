@@ -4,7 +4,11 @@ interface InputFieldProps {
   type?: string;
   placeholder?: string;
   value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  options?: { value: string; label: string }[];
+  className?: string; // ⭐ NEW
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -12,14 +16,37 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   value,
   onChange,
+  options = [],
+  className = "", // ⭐ NEW
 }) => {
+  const baseStyles =
+    "w-full p-3 border border-gray-300 rounded-lg focus:outline-none";
+
+  // Handle Select Field
+  if (type === "select") {
+    return (
+      <select
+        value={value}
+        onChange={onChange}
+        className={`${baseStyles} ${className}`}
+      >
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  // Handle Normal Input Field
   return (
     <input
       type={type}
       placeholder={placeholder}
       value={value}
       onChange={onChange}
-      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+      className={`${baseStyles} ${className}`}
     />
   );
 };

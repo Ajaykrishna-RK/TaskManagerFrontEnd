@@ -2,10 +2,17 @@
 // import { logout } from "../features/authSlice";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import ButtonLayout from "./common/ButtonLayout";
+import { useDispatch } from "react-redux";
+import { clearAuth } from "../redux/slice/AuthSlice";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
+  const logout = () => {
+    dispatch(clearAuth());
+  };
   return (
     <nav className="bg-gray-900 text-white shadow-lg px-6 py-4">
       <div className="flex items-center justify-between">
@@ -28,9 +35,9 @@ export default function Navbar() {
             Tasks
           </Link>
 
-          <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium">
-            Logout
-          </button>
+          <ButtonLayout onClick={logout} variant="danger">
+            logut
+          </ButtonLayout>
         </div>
 
         {/* Mobile Hamburger */}
@@ -81,9 +88,7 @@ export default function Navbar() {
             Tasks
           </Link>
 
-          <button className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium">
-            Logout
-          </button>
+          <ButtonLayout variant="danger">logut</ButtonLayout>
         </div>
       )}
     </nav>
