@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/login/Login";
 import MainLayout from "./layout/MainLayout";
@@ -11,6 +11,9 @@ function App() {
   return (
     <div className="from-gray-100 to-gray-300 bg-linear-to-br">
       <Routes>
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
         </Route>
