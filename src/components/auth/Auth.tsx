@@ -9,12 +9,11 @@ import { useValidation } from "../../hooks/UseValidation";
 import { authService } from "../../services/authService/authService";
 import { setAuth } from "../../redux/slice/AuthSlice";
 
-
 export default function LoginForm() {
   const [isLogin, setIsLogin] = useState(true);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [submitError, setSubmitError] = useState<string | null>(null);
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +21,7 @@ export default function LoginForm() {
 
   const handleSubmit = async () => {
     setSubmitError(null);
-
+    setLoading(true);
     const isValid = validate(form, (data) => {
       const err: Partial<typeof form> = {};
 
@@ -60,11 +59,12 @@ export default function LoginForm() {
           password: form.password,
         });
       }
-
+      setLoading(false);
       dispatch(setAuth({ user: data.user, token: data.token }));
       navigate("/dashboard");
     } catch (err: any) {
       setSubmitError(err?.message || "Something went wrong");
+      setLoading(false);
     }
   };
 
@@ -105,8 +105,12 @@ export default function LoginForm() {
         {errors.password && <ErrorText text={errors.password} />}
       </div>
 
-      <ButtonLayout className="w-full mt-4" onClick={handleSubmit}>
-        {isLogin ? "Login" : "Register"}
+      <ButtonLayout
+        variant="primary"
+        className="w-full mt-4"
+        onClick={handleSubmit}
+      >
+        {loading ? "loading..." : isLogin ? "Login" : "Register"}
       </ButtonLayout>
 
       <p className="text-center text-sm mt-4 text-gray-600">

@@ -5,6 +5,7 @@ import StatCard from "../../components/dashboard/StatCard";
 import ButtonLayout from "../../components/common/ButtonLayout";
 import { useNavigate } from "react-router-dom";
 import { statsConfig } from "../../data/Data";
+import Loading from "../../components/loading/Loading";
 
 interface DashboardStats {
   totalTasks: number;
@@ -17,20 +18,26 @@ export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const loadStats = async () => {
+    try {
+      const response = await taskService.dashboardStats();
+      setStats(response.data);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const loadStats = async () => {
-      try {
-        const response = await taskService.dashboardStats();
-        setStats(response.data);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadStats();
   }, []);
 
-  if (loading) return <div className="p-6">Loading dashboard...</div>;
+  if (loading)
+    return (
+      <div className="p-6">
+        <Loading />{" "}
+      </div>
+    );
   if (!stats)
     return <div className="p-6 text-red-500">Failed to load dashboard.</div>;
 
@@ -48,7 +55,7 @@ export default function Dashboard() {
           <StatCard
             key={key}
             title={cfg.title}
-            value={stats[key as keyof DashboardStats]} 
+            value={stats[key as keyof DashboardStats]}
             bg={cfg.bg}
             border={cfg.border}
             text={cfg.text}
