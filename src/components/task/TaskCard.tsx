@@ -1,4 +1,3 @@
-
 import { Pencil, Trash2 } from "lucide-react";
 import type { Task } from "../../types/TaskTypes";
 import TextComponent from "../common/TextComponent";
@@ -24,15 +23,30 @@ export default function TaskCard({
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5  transition ">
-      {/* Top labels */}
       <div className="flex justify-between items-center gap-3 mb-3">
         <span
-          className={`px-3 py-1 text-xs rounded-lg font-medium flex items-center gap-1 ${
+          className={`flex items-start gap-2 px-3 py-1 text-xs rounded-lg font-medium ${
             priorityColors[task.priority]
           }`}
         >
-          <span className="w-2 h-2 rounded-full bg-current"></span>
-          {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+          {/* Colored Dot */}
+          <span className="w-2 h-2 rounded-full bg-current mt-1"></span>
+
+          {/* Priority + AI Suggestion */}
+          <span className="flex flex-col leading-tight">
+            <span>
+              Priority:{" "}
+              {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
+            </span>
+
+            {task.aiSuggestedPriority && (
+              <span className="text-[10px] mt-1 opacity-80">
+                AI Suggestion:{" "}
+                {task.aiSuggestedPriority.charAt(0).toUpperCase() +
+                  task.aiSuggestedPriority.slice(1)}
+              </span>
+            )}
+          </span>
         </span>
 
         <TrafficLightToggle
@@ -50,11 +64,15 @@ export default function TaskCard({
       <div className="flex items-center justify-between mt-4 pt-3 border-t-[0.5px] border-t-[#c8c7c7] ">
         <TextComponent
           className="text-[14px]"
-          text={`Due Date: ${
-            task?.dueDate && new Date(task.dueDate).toLocaleDateString("en-GB")
+          text={
+            task?.dueDate
+              ? `Due Date: ${new Date(task.dueDate).toLocaleDateString(
+                  "en-GB"
+                )}`
+              : ""
           }
-`}
         />
+
         <div className="flex items-center gap-3">
           <button
             className="text-blue-600 cursor-pointer hover:text-blue-800 bg-blue-50 p-2 rounded-lg transition"

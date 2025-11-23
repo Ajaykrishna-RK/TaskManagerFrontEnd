@@ -11,4 +11,5 @@ export interface Task {
   aiSuggestedPriority?: Priority | string;
   createdAt?: string;
   updatedAt?: string;
+  owner?:string
 }

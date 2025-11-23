@@ -1,6 +1,7 @@
 
 import type { Task } from "../../types/TaskTypes";
-import TaskRow from "./TaskCard";
+import TaskCard from "./TaskCard";
+
 
 interface Props {
   tasks: Task[];
@@ -24,9 +25,9 @@ export default function TaskList({
   }
 
   return (
-    <div className="mt-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid gap-3">
+    <div className="mt-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 grid gap-3">
       {tasks.map((task) => (
-        <TaskRow
+        <TaskCard
           key={task._id}
           task={task}
           onEdit={onEdit}
