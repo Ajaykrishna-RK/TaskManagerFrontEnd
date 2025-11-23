@@ -5,6 +5,7 @@ import MainLayout from "./layout/MainLayout";
 import AuthLayout from "./layout/AuthLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import TaskPage from "./pages/task/TaskPage";
+import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<MainLayout />}>
-            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tasks" element={<TaskPage />} />
           </Route>
         </Route>
