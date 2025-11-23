@@ -3,12 +3,10 @@ import type { Task } from "../../types/TaskTypes";
 
 interface TaskState {
   tasks: Task[];
-  loading: boolean;
 }
 
 const initialState: TaskState = {
   tasks: [],
-  loading: false,
 };
 
 const taskSlice = createSlice({
@@ -19,7 +17,6 @@ const taskSlice = createSlice({
       state.tasks = action.payload;
     },
     addTask: (state, action: PayloadAction<Task>) => {
-      console.log(action.payload,"pu")
       state.tasks.unshift(action.payload);
     },
     updateTask: (state, action: PayloadAction<Task>) => {
@@ -30,12 +27,8 @@ const taskSlice = createSlice({
     removeTask: (state, action: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((t) => t._id !== action.payload);
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
   },
 });
 
-export const { setTasks, addTask, updateTask, removeTask, setLoading } =
-  taskSlice.actions;
+export const { setTasks, addTask, updateTask, removeTask } = taskSlice.actions;
 export default taskSlice.reducer;

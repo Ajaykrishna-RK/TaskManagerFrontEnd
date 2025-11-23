@@ -1,4 +1,3 @@
-import React from "react";
 
 function ErrorText({ text }: { text?: string }) {
   return (

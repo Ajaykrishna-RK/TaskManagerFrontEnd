@@ -1,11 +1,8 @@
-// src/components/task/TaskCard.tsx
 
 import { Pencil, Trash2 } from "lucide-react";
 import type { Task } from "../../types/TaskTypes";
 import TextComponent from "../common/TextComponent";
 
-import ToggleSwitch from "../common/ToggleSwitch";
-import TriStateToggle from "../common/ToggleSwitch";
 import TrafficLightToggle from "../common/ToggleSwitch";
 
 export default function TaskCard({

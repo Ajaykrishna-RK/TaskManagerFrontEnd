@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTasks,
-  setLoading,
   addTask,
   updateTask,
   removeTask,
@@ -16,23 +15,25 @@ import TaskForm from "../../components/task/TaskForm";
 import TaskList from "../../components/task/TaskList";
 import PopUpWrapper from "../../components/common/PopUpWrapper";
 import ButtonLayout from "../../components/common/ButtonLayout";
+import Loading from "../../components/loading/Loading";
 
 export default function TaskPage() {
   const dispatch = useDispatch();
-  const { tasks, loading } = useSelector((s: RootState) => s.tasks);
+  const { tasks } = useSelector((s: RootState) => s.tasks);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Task | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      dispatch(setLoading(true));
+      setLoading(true);
       try {
         const data = await taskService.fetchTasks();
         dispatch(setTasks(data));
       } finally {
-        dispatch(setLoading(false));
+        setLoading(false);
       }
     };
     load();
@@ -46,7 +47,6 @@ export default function TaskPage() {
 
   const handleUpdate = async (form: Partial<Task>) => {
     if (!editing) return;
-
     const updated = await taskService.updateTask(editing._id!, form);
     dispatch(updateTask(updated));
     setEditing(null);
@@ -115,7 +115,7 @@ export default function TaskPage() {
 
       {/* TASK LIST */}
       {loading ? (
-        <div>Loading tasks...</div>
+        <Loading />
       ) : (
         <TaskList
           tasks={tasks}

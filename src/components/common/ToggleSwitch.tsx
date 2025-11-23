@@ -1,4 +1,4 @@
-import React from "react";
+
 
 interface TrafficLightProps {
   value: "todo" | "in-progress" | "done";

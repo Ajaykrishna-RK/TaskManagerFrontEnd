@@ -21,7 +21,6 @@ export default function TaskForm({
   editing,
   onCreate,
   onUpdate,
-  clearEditing,
 }: Props) {
   const userId = useSelector((state: RootState) => state.auth.user?._id);
 
