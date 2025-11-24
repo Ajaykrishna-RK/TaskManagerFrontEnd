@@ -25,8 +25,6 @@ The UI is clean, responsive, and follows scalable React architecture with reusab
 - Total Tasks  
 - Completed vs Pending
 
-
-
 ## 🛠️ Tech Stack
 
 - **TypeScript**
@@ -41,6 +39,11 @@ The UI is clean, responsive, and follows scalable React architecture with reusab
 
 Create `.env` in the frontend root:
 
+## ▶️ Running the Backend
+
+- clone this project
+- npm install
+- npm run dev
 
 
 
