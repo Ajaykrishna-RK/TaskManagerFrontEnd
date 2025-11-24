@@ -27,7 +27,7 @@ export default function TaskPage() {
   const [editing, setEditing] = useState<Task | null>(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(9);
   const [sort, setSort] = useState("-createdAt");
   const [pagination, setPagination] = useState<any>(null);
   const queryParams = useMemo(
@@ -161,7 +161,7 @@ export default function TaskPage() {
           />
 
           {pagination && (
-            <div className="justify-end items-end flex mt-10">
+            <div className="justify-end items-end flex py-10">
             <Pagination
               page={page}
               total={pagination.total}

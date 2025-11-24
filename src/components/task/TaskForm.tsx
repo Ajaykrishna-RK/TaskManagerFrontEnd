@@ -50,9 +50,7 @@ export default function TaskForm({
     }
   }, [editing]);
 
-  // -------------------------------------------------------
-  // Validation
-  // -------------------------------------------------------
+
   const validate = useCallback(() => {
     const newErrors: { task?: string} = {};
 
@@ -64,16 +62,11 @@ export default function TaskForm({
     return Object.keys(newErrors).length === 0;
   }, [form]);
 
-  // -------------------------------------------------------
-  // Handle Input Change (memoized)
-  // -------------------------------------------------------
   const updateField = useCallback((key: keyof Task, value: any) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  // -------------------------------------------------------
-  // Handle Submit
-  // -------------------------------------------------------
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
@@ -95,7 +88,7 @@ export default function TaskForm({
           await onCreate(payload);
         }
 
-        // Reset form after success
+    
         setForm({
           task: "",
           description: "",
@@ -112,9 +105,7 @@ export default function TaskForm({
     [form, userId, editing, onCreate, onUpdate, validate, clearEditing]
   );
 
-  // -------------------------------------------------------
-  // JSX
-  // -------------------------------------------------------
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -141,6 +132,7 @@ export default function TaskForm({
         <InputField
           type="date"
           className="mt-2"
+         
           value={form.dueDate || ""}
           onChange={(e) => updateField("dueDate", e.target.value)}
         />
