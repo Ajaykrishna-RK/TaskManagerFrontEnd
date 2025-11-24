@@ -34,13 +34,15 @@ export default function PopUpWrapper({
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 text-gray-500 hover:text-gray-700"
+          className="absolute cursor-pointer right-4 top-4 text-gray-500 hover:text-gray-700"
         >
           <X size={28} />
         </button>
 
         {title && (
-          <h2 className="text-xl text-center font-semibold mb-4 text-gray-700 pb-2">{title}</h2>
+          <h2 className="text-xl text-center font-semibold mb-4 text-gray-700 pb-2">
+            {title}
+          </h2>
         )}
 
         {children}
